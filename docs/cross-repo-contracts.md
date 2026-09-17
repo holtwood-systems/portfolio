@@ -185,7 +185,7 @@ cancel(sequence)
 metrics()
 ```
 
-### 10.1 已落地决策：C ABI 双源契约（ABI v2）
+### 10.1 已落地决策：C ABI 双源契约（ABI v3）
 
 tiny-llm（数据面）与 paged-serving（控制面）采用**同进程 C ABI 静态链接**：
 
@@ -196,14 +196,42 @@ tiny-llm（数据面）与 paged-serving（控制面）采用**同进程 C ABI �
 - 分页 KV 策略 1（block_tables + scatter/gather）为默认路径；
   `max_num_blocks == 0` 表示策略 2。
 - KV 生命周期语义：后端管理序列分配/释放（`tinyllm_allocate_sequence` /
-  `tinyllm_free_sequence`），调度侧驱动。
+  `tinyllm_free_sequence`），调度侧驱动。**策略 1 下 `num_tokens` 仅登记序列、
+  不参与容量预留**——分页容量权威是共享 block pool + `max_seq_len`；
+  策略 2（连续 KV）下 `num_tokens` 才是真实的每序列预留容量。
 - `tinyllm_step` 的 `next_tokens` 至少容纳 `num_sequences` 个 `int`。当
   `logprobs_k == 0` 时 `logprobs` 可为空；当 `logprobs_k > 0` 时调用方必须提供
   至少 `num_sequences * logprobs_k * 2` 个 `float`。第 `s` 个序列、第 `j` 个候选
   从 `((s * logprobs_k + j) * 2)` 开始，依次存储以 `float` 表示的 `token_id` 与
   `logprob`。`logprobs_k < 0`、超过词表大小或请求输出但缓冲区为空均为参数错误。
+- **逐序列状态（ABI v3）**：`tinyllm_step` 新增必填出参
+  `seq_status[num_sequences]`。返回值 `TLLM_OK` 仅表示调用级执行完成；
+  `seq_status[i] == TLLM_SEQ_OK` 时 `next_tokens[i]` 有效，`TLLM_SEQ_ERR`
+  表示该序列失败且**不株连** batch 内其他序列。`TLLM_ERR` 保留给调用级
+  违约（空指针、logprobs_k 越界、内部缓冲分配失败等）。序列级失败后该
+  序列的 KV/position 不推进（序列级原子性），可安全重试或释放。
+- **已声明但未生效的参数**：`positions` 在两种策略下均被后端忽略——
+  序列位置由后端 `SeqState` 内部跟踪。chunked prefill / prefix caching
+  等需要调用方控制位置的功能必须走下一次 ABI breaking change。
+- 策略 1 的 decode 路径默认经 **CUDA Graph** 重放（kernel 地址固化、
+  token/位置/可见长度经固定 device buffer 每步 H2D 更新；
+  `TLLM_FFI_CUDA_GRAPHS=0` 显式关闭）。这消除的是 launch 开销，
+  **不等于 Transformer 层的计算批量化**——各序列仍逐序列执行 layer
+  forward，batch 只作用于末端 norm + LM head + argmax。
 - 差分验证：`tiny-llm/tests/test_ffi.cpp`（策略 1 vs 策略 2 逐 token 差分）、
+  `tiny-llm/tests/test_ffi_paged_dispatch.cpp`（含逐序列失败隔离用例）、
   `paged-serving/tests/tiny_llm_backend.rs`、`paged-serving/tests/tiny_llm_text_e2e.rs`。
+
+#### 控制面 ↔ 数据面对账不变量
+
+- 调度器 `max_batch_size` 不得超出后端 `ExecutorCapabilities::max_batch_seqs`；
+  引擎在构造时调用 `Scheduler::reconcile_backend_batch_cap` 收敛。
+- `ExecutionOutput` 允许为调度集合的真子集：缺失的 `seq_id` 由引擎判定为
+  逐序列失败（`fail_sequences` 只作用于失败子集），成功序列照常推进。
+- 后端能力声明（`ExecutorCapabilities`）：`sampling`、`logprobs`、
+  `retry_safe`、`max_batch_seqs`。请求携带后端不支持的能力时（如
+  `params.logprobs.is_some()` 而后端 `logprobs == false`），引擎在 submit
+  阶段显式拒绝，不允许静默降级。
 
 ## 11. 契约变更规则
 
