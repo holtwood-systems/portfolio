@@ -97,6 +97,10 @@ GitHub topics 三处同步。
   前者不是远端持续 GPU CI，后者不代替完整 timeline。direct paged decode /
   split-KV 已实现并有 [RTX 5070 Ti kernel 原始结果](https://github.com/open-infra-ai/tiny-llm/blob/master/docs/performance/results/2026-09-15-rtx5070ti-splitkv.md)
   与 raw 重算工具；默认仍为 legacy、split 关闭，kernel 数字不外推 TPOT/Serving 收益。
+  2026-11-05 修复 CUDA arch 守护失效（compute_52 PTX 被驱动 550 拒 JIT、
+  kernel 全静默不跑）后，sm_89 原生门禁 252/252、0 skip，并入库 RTX 4090
+  decode 基线（graphs TPOT 2.267ms/441 tok/s；ncu 因宿主权限不可用，
+  cudaEvent 基准替代，失败证据保留）；该数字与 3060/5070 Ti 仅并列，不作前后对比。
 - **paged-serving**：**3 并发分页请求 e2e 与 llama.cpp greedy 对齐**（请求 1 全序列
   严格一致；请求 2 的 `equals`/`is` 为 W8A16 vs Q4_K_M 量化 argmax 边界翻转，
   已诚实记录为"前缀一致 + EOS 终止 + 分歧注释"，不伪造全序列一致）。真实 CUDA
@@ -108,6 +112,8 @@ GitHub topics 三处同步。
   TTFT p95 未通过 10% 收敛门槛。两包没有配对基线，不能写成速度提升、稳定 SLO、通用容量
   或生产成熟度。CI（2026-10-04）：cargo **615 项测试通过**；2026-10-26 真实
   tiny-llm 后端本地测试 **8/8 通过、0 ignored**，不替代持续 GPU CI 或网络故障验证。
+  2026-11-05 真实后端 RTX 4090 closed-loop 双包入库：首包如实记录外部
+  显存干扰下 c1/c4/c8 未收敛，独占复测 c1–c8 全收敛、~300 tok/s 饱和。
 - **cuflash**：FlashAttention 前后向 FP32/FP16/BF16，FP16/BF16 前向接 WMMA；
   修复 grid.y 65535 越界（B*H>65535 回归测试）并加入 causal 边界块跳过优化；
   RTX 3060 Laptop **2026-08-23 快照 81/81 项测试通过**（可选 PyTorch 集成 1 项跳过）；
@@ -130,6 +136,10 @@ GitHub topics 三处同步。
   [结果包](https://github.com/open-infra-ai/kvtier/blob/master/bench/repro-31600/evidence/2026-10-26-wsl2-l2-baseline/README.md)
   固定上游 commit、模型与补丁 hash，并保留失败结果和 WSL2 指针根因；该结果
   不代表 #31600 复现、自研 tiering engine、多卡/L3 或跨模型/GPU 性能。
+  2026-11-05 原生 Linux/RTX 4090 完成 8 轮基线：host 命中 4223/4224，
+  配对 R/P 中位 0.375，**kernel IO 后端无需 #43375 补丁**——证实指针
+  问题为 WSL2 特有；驱动 550 下 torch 2.11+cu128 与源码 sgl-kernel 的
+  偏离逐项记录，跨硬件数字仅并列。
 
 > 测试数是注明日期的历史快照；Serving 与 DPA/split-KV 另按其结果日期引用。
 > 性能以技术仓 raw、硬件、commit 与命令为准；源码、测试和实验不自动证明本人

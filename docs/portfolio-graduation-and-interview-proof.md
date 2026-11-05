@@ -206,6 +206,10 @@ E5 → 端到端 workload + failure injection + 公平 baseline
 - CUDA Graph A/B 有绑定 commit、模型和 raw data 的历史证据；
 - 固定模型无 Graph decode 已有 ncu 汇总与归因，量化 matmul 和 LM head 的瓶颈
   结论只适用于记录窗口；
+- 2026-11-05 修复 CUDA arch 守护失效后（compute_52 PTX 被驱动 550 拒 JIT、
+  kernel 全静默未启动），RTX 4090 sm_89 原生门禁 252/252、0 skip，decode
+  graphs TPOT 2.267ms/441 tok/s；ncu 因宿主权限不可用，kernel 归因走
+  cudaEvent 基准；该数字与既有 3060/5070 Ti 数据仅并列，不作前后对比；
 - C ABI 支持 paged-serving 同进程调用。
 
 禁止说法：
@@ -291,7 +295,10 @@ E5 → 端到端 workload + failure injection + 公平 baseline
   回载基线：逐请求 host 命中与 counter 交叉验证通过，配对 R/P TTFT 比中位数
   为 0.215；
 - 复现并定位了 WSL2 上 registered host/device 指针不恒等导致的回载崩溃；
-  使用归档的上游未合入 PR 局部补丁后完成实验，补丁来源与 hash 均可审计。
+  使用归档的上游未合入 PR 局部补丁后完成实验，补丁来源与 hash 均可审计；
+- 2026-11-05 在原生 Linux/RTX 4090 上完成 8 轮基线：host 命中 4223/4224，
+  配对 R/P 中位 0.375，kernel IO 后端**无需补丁**——反向证实 WSL2 指针
+  问题为平台特有；torch 2.11+cu128 与源码 sgl-kernel 等偏离逐项记录。
 
 禁止说法：
 
@@ -309,7 +316,8 @@ E5 → 端到端 workload + failure injection + 公平 baseline
    P 请求冷启动，counter 与 load-back 字节数交叉验证）；
 4. ~~CPU-only CI~~（2026-10-26 已加入离线测试 job；远端执行待后续推送确认）；
 5. ~~一个真实 GPU 单卡 L2 baseline~~（2026-10-26 已完成并审计，限制见上）；
-6. IO backend/KV dtype 矩阵，以及上游补丁合入后的复跑；
+6. IO backend/KV dtype 矩阵（kernel IO 原生 Linux 已于 2026-11-05 验证，
+   其余组合仍缺），以及上游补丁合入后的复跑；
 7. 多卡/L3 只保留 design-only，直到资源批准。
 
 面试官应能追问：

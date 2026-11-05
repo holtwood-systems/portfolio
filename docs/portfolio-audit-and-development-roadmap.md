@@ -95,8 +95,10 @@
 
 - `kvtier`（[公开孵化](https://github.com/open-infra-ai/kvtier)，2026-10-25 入册 active）：KV offload 源码研究、实验编排和
   telemetry 门禁；2026-10-26 已有一份经审计的单卡 L2 回载基线与 WSL2 host
-  指针根因证据。结果限于单模型、本地补丁和 6 轮配对，不作为简历主项目或通用
-  性能声明。
+  指针根因证据；2026-11-05 原生 Linux/RTX 4090 完成 8 轮基线，kernel IO
+  后端无需补丁（反向证实 WSL2 问题为平台特有），torch 2.11+cu128 与源码
+  sgl-kernel 等 toolchain 偏离逐项记录。结果限于单模型、本地补丁和配对轮次，
+  不作为简历主项目或通用性能声明。
 - `cpp-high-performance-guide`（2026-10-25 入册 stable）：CPU 侧 C++20 性能工程
   教学线，独立于 GPU 旗舰与系统集成图；以可复跑基准和 sanitizer/CI 门禁为证据，
   不与 GPU 线争夺叙事中心。
@@ -106,13 +108,13 @@
 
 | 仓库 | 当前价值 | 主要硬伤 | 建议 |
 |------|----------|----------|------|
-| `tiny-llm` | 真实模型、W8A16、Graph、C ABI；direct paged/split-KV 已有 kernel 结果；两种模型本地 GPU 门禁 252/252、0 skip，decode 有 ncu 归因 | 持续 GPU/Sanitizer 门禁、完整 layer batch、多 GPU、端到端 direct A/B、可打开 profiler 报告与 nsys timeline 仍有缺口 | 旗舰主打，不重复实现 direct kernel |
-| `paged-serving` | 调度、资源不变量、准入/429、SSE、正式负载结果；取消、背压与类型化指标已随 PR #24 合入 master；真实后端本地测试 8/8、0 ignored | 持续真实 backend 门禁、网络故障、容量调优与持续观测待补；调度 batch 不等于 fused GPU batch | 与 `tiny-llm` 联合主打 |
+| `tiny-llm` | 真实模型、W8A16、Graph、C ABI；direct paged/split-KV 已有 kernel 结果；两种模型本地 GPU 门禁 252/252、0 skip（3060 与 sm_89 双架构），decode 有 ncu 归因（4090 上 ncu 被宿主权限拒绝，cudaEvent 替代） | 持续 GPU/Sanitizer 门禁、完整 layer batch、多 GPU、端到端 direct A/B、可打开 profiler 报告与 nsys timeline 仍有缺口 | 旗舰主打，不重复实现 direct kernel |
+| `paged-serving` | 调度、资源不变量、准入/429、SSE、正式负载结果；取消、背压与类型化指标已随 PR #24 合入 master；真实后端本地测试 8/8、0 ignored；RTX 4090 独占 closed-loop 四档全收敛（~300 tok/s），干扰包如实保留 | 持续真实 backend 门禁、网络故障、容量调优与持续观测待补；调度 batch 不等于 fused GPU batch | 与 `tiny-llm` 联合主打 |
 | `cpp-high-performance-guide` | 9 个 C++20 教学模块；CMake preset、GTest/RapidCheck 与 Google Benchmark；CI 覆盖格式、GCC debug/release 与 asan/tsan/ubsan | 跨平台/编译器矩阵、基准方差元数据与 profiler 原始包待补；CPU 微基准不代表 GPU 或端到端收益 | CPU 侧教学线，不占旗舰叙事 |
 | `cuflash` | online-softmax forward、WMMA、backward、Split-KV 有源码和追问价值 | GPU CI 与 profiler 证据不足；decode workspace 的并发/stream 安全需强化；不是 FA2/FA3 | Kernel 岗第二旗舰 |
 | `trifuse` | Triton kernel 和 `torch.library`；两投影指标与正确性拒绝计时有回归测试 | 尚缺逐次 raw timing/provenance、公平 baseline 和 profiler；不引用缺原始样本的旧延迟 | 与 `cuflash` 合并展示 |
 | `cuda-foundations` | 适合证明 CUDA 基础、优化阶梯和负结果纪律 | 高级术语中存在 placeholder/fallback；系统深度不足 | 学习档案，不占主项目位 |
-| `kvtier` | 实验污染控制、上游阅读、CPU-only CI；单卡 L2 回载结果有逐请求 host 命中、counter 与审计证据 | 跨 IO/KV dtype、硬件/模型泛化、核心实现改动和闭环优化仍缺；本地未合入上游补丁不是自有 runtime 优化 | 研究辅助，保留 active 与单包边界 |
+| `kvtier` | 实验污染控制、上游阅读、CPU-only CI；单卡 L2 回载结果有逐请求 host 命中、counter 与审计证据；WSL2/原生 Linux 双平台包，后者证实 kernel IO 无补丁可用 | 跨 IO/KV dtype、硬件/模型泛化、核心实现改动和闭环优化仍缺；本地未合入上游补丁不是自有 runtime 优化 | 研究辅助，保留 active 与单包边界 |
 | 总仓 | 证据治理与跨仓导航 | 本身没有新增数据面实现 | 只作入口 |
 
 ## 4. 仓库证据矩阵（不是本人能力评分）
