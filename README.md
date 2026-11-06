@@ -4,6 +4,39 @@
 > 每个性能结论都应绑定代码、环境、原始结果和适用边界。本仓是组织的
 > landing 页、状态注册表、学习路径、跨仓契约和历史档案。
 
+## 技术叙事
+
+我的成长线是 **GPU kernel → LLM 推理优化 → 分布式系统**：先用 Triton/CUDA 手写
+FlashAttention、softmax 和 Transformer 组件，全部与参考实现对到 1e-6 量级；再用
+C++/CUDA 把 GGUF 权重一路写到 token 生成的推理引擎，配上 Rust serving 控制面；最近在
+2×RTX 4090 上实测 DDP 通信、KV 显存与投机解码。每个数字都绑定硬件、commit 和原始结果，
+包括故意保留的失败用例——先诚实，再优化。
+
+## 项目卡片
+
+| 项目 | 一句话定位 | 核心数字 |
+|------|------------|----------|
+| [tiny-llm](../tiny-llm) | CUDA 原生 C++ 推理引擎：GGUF → W8A16 → decode，显式/分页 KV | CUDA Graphs TPOT **-37.2%**、RTX 4090 基线 2.267 ms/token（441 tok/s）、门禁 252/252、compute-sanitizer 全绿 |
+| [paged-serving](../paged-serving) | Rust serving 控制面：Paged KV + continuous batching + HTTP/SSE | 3 并发 e2e 与 llama.cpp greedy 对齐、cargo 615 项测试、4090 closed-loop c1–c8 收敛 ~300 tok/s |
+| [cuflash](../cuflash) | CUDA C++ FlashAttention 前后向（WMMA、FlashDecoding） | FP32/FP16/BF16、causal 边界块跳过、81/81 测试 |
+| [trifuse](../trifuse) | Triton 融合算子 + `torch.library` 集成 | RTX 4090 实测：rmsnorm_rope 359.9 GB/s、gated_mlp 31.8 TFLOPS、GPU 123/123 |
+| [cuda-foundations](../cuda-foundations) | CUDA 工程学习阶梯：SGEMM → 推理组件 | 261/261 测试 |
+| [cpp-high-performance-guide](../cpp-high-performance-guide) | C++20 性能工程教学：内存/SIMD/并发/NUMA/GEMM | CI 119/119 |
+| [kvtier](../kvtier) | SGLang HiCache KV tiering 上游研究 | 单卡 L2 回载：配对 R/P TTFT 比中位 0.215（3060）/ 0.375（4090） |
+
+## 2026-11 实验线（2×RTX 4090 48GB）
+
+最近一批独立实验（interview lab，结果包整理中），把"知道原理"变成"测得出数字、算得清公式"：
+
+| 实验 | 关键数字 |
+|------|----------|
+| 手写 Triton FlashAttention | causal 16K **24.7x** vs naive；显存 **91x**（17.4GB→0.19GB）；与 SDPA 持平（95%~102%） |
+| 手撕 softmax（数值稳定 + Triton） | naive 输入 1000 直接 NaN；Triton **1.5x** vs PyTorch；带宽利用率 53%→88% |
+| 手撕 RoPE / RMSNorm / GQA | 与参考误差 4.8e-07 / 0.0 / 3.3e-07（fp32） |
+| KV Cache 显存账 | 实测斜率 **1024 B/token** = 理论值，误差 0.0%、R²=1.0 |
+| 双卡 DDP/NCCL | P2P 禁用跨卡 21.9 vs 同卡 467 GB/s（**21x**）；公平对比 **1.37x**；716MB 梯度 ÷ 实测总线 15.5GB/s = 46ms 预估 vs 45ms 实测 |
+| vLLM 消融矩阵 / 手写投机解码 | 实验进行中 |
+
 仓库职责与私人求职材料的边界见
 [`docs/repository-boundaries.md`](docs/repository-boundaries.md)。
 
@@ -157,6 +190,8 @@ GitHub topics 三处同步。
    Tensor Core、数值正确性和 profiling 深度。
 3. **基础与对照：cuda-foundations + trifuse** —— 证明优化方法、参考实现和
    CUDA/Triton 工程取舍，不与旗舰系统争夺叙事中心。
+4. **实验纵深：2026-11 双卡实验线** —— 手写 softmax/FlashAttention、组件精度验证、
+   KV 显存账、DDP 通信公式-实测闭环与投机解码，把原理变成可复现的数字与公式手算。
 
 ## 求职与面试执行
 
