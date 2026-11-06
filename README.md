@@ -101,6 +101,9 @@ GitHub topics 三处同步。
   kernel 全静默不跑）后，sm_89 原生门禁 252/252、0 skip，并入库 RTX 4090
   decode 基线（graphs TPOT 2.267ms/441 tok/s；ncu 因宿主权限不可用，
   cudaEvent 基准替代，失败证据保留）；该数字与 3060/5070 Ti 仅并列，不作前后对比。
+  2026-11-06 compute-sanitizer 首次全绿：racecheck 曾定位 block-reduce
+  缺收尾屏障的真实竞态（SASS 证实，修复后 0 hazards、门禁 252/252、
+  TPOT +0.1%），并加固了旧 build 缓存静默退回 sm_52 的 CMake 陷阱。
 - **paged-serving**：**3 并发分页请求 e2e 与 llama.cpp greedy 对齐**（请求 1 全序列
   严格一致；请求 2 的 `equals`/`is` 为 W8A16 vs Q4_K_M 量化 argmax 边界翻转，
   已诚实记录为"前缀一致 + EOS 终止 + 分歧注释"，不伪造全序列一致）。真实 CUDA
