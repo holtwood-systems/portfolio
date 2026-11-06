@@ -3,8 +3,10 @@
 > 本文回答一个问题：这些仓库在什么条件下可以安全地写入简历、用于现场演示，并经得起
 > AI Infra 面试官沿代码、正确性、性能和系统边界继续追问。
 
-本文是 live 标准；`interview/` 下的材料是历史归档，数字和能力状态仍应以技术仓当前
-commit、结果包和 [`evidence-index.md`](evidence-index.md) 为准。
+本文是 live 标准；面试排练材料已于 2026-11-06 迁回个人私有仓
+（`holtwood/ai-infra-interview-prep` 的 `archive/portfolio-interview-2026-08/`），
+数字和能力状态仍应以技术仓当前 commit、结果包和
+[`evidence-index.md`](evidence-index.md) 为准。
 
 ## 1. 最重要的结论
 

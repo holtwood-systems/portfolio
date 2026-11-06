@@ -204,8 +204,6 @@ GitHub topics 三处同步。
 
 - [`archive/plans/`](archive/plans/) —— Phase 1–3 与面试执行期的历史执行计划
   （`MASTER_PLAN.md` / `PHASE2_*.md` / `PHASE3_PLAN.md` / `PLAN_v3.md` / `PLAN_I.md`）。
-- [`interview/`](interview/) —— 面试证据包与排练材料（Phase 3 / Phase I 产物）：
-  证据矩阵、数字卡、讲述稿、QA 库、模拟面试、简历条目等。
 - [`docs/organization-audit/2026-08-13/`](docs/organization-audit/2026-08-13/) ——
   组织审计只读快照（当时教学仓还叫 `cuda-kernel-academy`，不是当前事实）。
 - [`changelog/`](changelog/) —— 工作区治理变更记录。
