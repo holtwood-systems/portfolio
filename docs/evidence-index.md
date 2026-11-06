@@ -20,6 +20,16 @@
 3. **CPU/CI 回归**：证明接口、调度、参考模型或文档未回退，不替代 CUDA 运行时验证。
 4. **脚手架或报告模板**：只表示实验已可准备；在产生绑定环境的结果前，不得称为已完成实验。
 
+## 已失效 / 不可引用证据
+
+| 包 | 状态 | 原因 | 审计 |
+|---|---|---|---|
+| paged-serving `2026-11-06-7b-serving` | **invalid / unverified** | c1 TPOT 2.62 ms/token 与 tiny-llm 同模型 7B bench 11.26 ms/token 矛盾，且与 0.5B 正式包 2.63 ms/token 几乎重合；缺 provenance/server log/模型与 tokenizer hash；8 请求、0 预热、单轮 | [AUDIT.md](https://github.com/holtwood-systems/paged-serving/blob/master/tests/evidence/2026-11-06-7b-serving/AUDIT.md) |
+| 2026-11 私有 2×4090 实验线 | **未公开** | 无公开可复现 artifact；不作为公开作品集或“分布式经验”声明 | — |
+
+这两项都不进入简历、README 亮点、跨引擎比较或“已完成实验”列表。
+私有实验线保留在个人执行仓；只有稳定硬件、公开结果包和限制说明齐全后才重新入册。
+
 ## 当前可导航证据
 
 | 仓库 | 可审计入口 | 能证明什么 | 不能证明什么 |

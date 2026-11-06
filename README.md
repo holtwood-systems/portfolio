@@ -8,8 +8,9 @@
 
 我的成长线是 **GPU kernel → LLM 推理优化 → 分布式系统**：先用 Triton/CUDA 手写
 FlashAttention、softmax 和 Transformer 组件，全部与参考实现对到 1e-6 量级；再用
-C++/CUDA 把 GGUF 权重一路写到 token 生成的推理引擎，配上 Rust serving 控制面；最近在
-2×RTX 4090 上实测 DDP 通信、KV 显存与投机解码。每个数字都绑定硬件、commit 和原始结果，
+C++/CUDA 把 GGUF 权重一路写到 token 生成的推理引擎，配上 Rust serving 控制面。
+另外在私有 interview lab 中做过 2×RTX 4090 的 DDP/KV/投机解码练习；这些结果尚未
+形成公开可复现 artifact，因此本页不引用其数字。公开作品集只列能点进原始结果的证据，
 包括故意保留的失败用例——先诚实，再优化。
 
 ## 项目卡片
@@ -24,18 +25,15 @@ C++/CUDA 把 GGUF 权重一路写到 token 生成的推理引擎，配上 Rust s
 | [cpp-high-performance-guide](../cpp-high-performance-guide) | C++20 性能工程教学：内存/SIMD/并发/NUMA/GEMM | CI 119/119 |
 | [kvtier](../kvtier) | SGLang HiCache KV tiering 上游研究 | 单卡 L2 回载：配对 R/P TTFT 比中位 0.215（3060）/ 0.375（4090） |
 
-## 2026-11 实验线（2×RTX 4090 48GB）
+> 表中测试数/性能数字来自各仓最近一次归档快照，硬件、套件和日期不同；
+> 以链接报告为准，不把不同硬件的数字相加或横向排名。
 
-最近一批独立实验（interview lab，结果包整理中），把"知道原理"变成"测得出数字、算得清公式"：
+## 私有实验线（不作为公开证据）
 
-| 实验 | 关键数字 |
-|------|----------|
-| 手写 Triton FlashAttention | causal 16K **24.7x** vs naive；显存 **91x**（17.4GB→0.19GB）；与 SDPA 持平（95%~102%） |
-| 手撕 softmax（数值稳定 + Triton） | naive 输入 1000 直接 NaN；Triton **1.5x** vs PyTorch；带宽利用率 53%→88% |
-| 手撕 RoPE / RMSNorm / GQA | 与参考误差 4.8e-07 / 0.0 / 3.3e-07（fp32） |
-| KV Cache 显存账 | 实测斜率 **1024 B/token** = 理论值，误差 0.0%、R²=1.0 |
-| 双卡 DDP/NCCL | P2P 禁用跨卡 21.9 vs 同卡 467 GB/s（**21x**）；公平对比 **1.37x**；716MB 梯度 ÷ 实测总线 15.5GB/s = 46ms 预估 vs 45ms 实测 |
-| vLLM 消融矩阵 / 手写投机解码 | 实验进行中 |
+2026-11 的 2×RTX 4090 实验（DDP/NCCL、KV 显存、投机解码等）在私有
+interview lab 中进行，原始记录保留在私有执行仓；尚未形成公开、可复现的
+artifact 链接。按本仓证据规则，本页不列这些数字，也不把它们写成分布式
+经验；待有稳定硬件、公开结果包和限制说明后再入册。
 
 仓库职责与私人求职材料的边界见
 [`docs/repository-boundaries.md`](docs/repository-boundaries.md)。
