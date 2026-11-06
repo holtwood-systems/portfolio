@@ -19,7 +19,7 @@
 `kvtier` 是 KV tiering 上游研究选修（SGLang HiCache 复现实验与上游贡献，
 active，尚无完成审计的 GPU 结果包）。两者不改变上表主线顺序。
 
-> ⚠️ **教学预览**：`cuda-foundations` 的 [04-inference-engine](https://github.com/open-infra-ai/cuda-foundations/blob/master/04-inference-engine/README.md)
+> ⚠️ **教学预览**：`cuda-foundations` 的 [04-inference-engine](https://github.com/holtwood-systems/cuda-foundations/blob/master/04-inference-engine/README.md)
 > 是 `tiny-llm` 的简化预习版（教学预览，**非独立作品**），用于演示 kernel/内存/流如何
 > 组装成小系统；真实推理运行时以 `tiny-llm` 为准。
 

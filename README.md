@@ -1,4 +1,4 @@
-# open-infra-ai · AI Infra 系统作品集
+# Holtwood Systems · AI Infra 系统作品集
 
 > 从可验证的 CUDA/Triton kernel 到真实权重推理与 serving 控制面。
 > 每个性能结论都应绑定代码、环境、原始结果和适用边界。本仓是组织的
@@ -11,11 +11,11 @@
 
 | 面试主题 | 从哪里开始 | 重点 |
 |----------|--------------|------|
-| 端到端 LLM Serving | [tiny-llm](https://github.com/open-infra-ai/tiny-llm) + [paged-serving](https://github.com/open-infra-ai/paged-serving) | 真实权重、W8A16、Paged KV、continuous batching、C ABI、HTTP/SSE |
-| CUDA kernel 深挖 | [cuflash](https://github.com/open-infra-ai/cuflash) | online softmax、Tensor Core、FlashDecoding、数值与性能边界 |
-| CUDA/Triton 基础与对照 | [cuda-foundations](https://github.com/open-infra-ai/cuda-foundations) + [trifuse](https://github.com/open-infra-ai/trifuse) | 优化阶梯、参考实现、差分测试、`torch.library` |
-| C++ 高性能工程 | [cpp-high-performance-guide](https://github.com/open-infra-ai/cpp-high-performance-guide) | C++20 教学阶梯：内存/SIMD/并发/NUMA/GEMM 与可复跑基准 |
-| KV tiering 上游研究 | [kvtier](https://github.com/open-infra-ai/kvtier) | SGLang HiCache 数据流、W/E/R/P 实验脚手架与结果审计 |
+| 端到端 LLM Serving | [tiny-llm](https://github.com/holtwood-systems/tiny-llm) + [paged-serving](https://github.com/holtwood-systems/paged-serving) | 真实权重、W8A16、Paged KV、continuous batching、C ABI、HTTP/SSE |
+| CUDA kernel 深挖 | [cuflash](https://github.com/holtwood-systems/cuflash) | online softmax、Tensor Core、FlashDecoding、数值与性能边界 |
+| CUDA/Triton 基础与对照 | [cuda-foundations](https://github.com/holtwood-systems/cuda-foundations) + [trifuse](https://github.com/holtwood-systems/trifuse) | 优化阶梯、参考实现、差分测试、`torch.library` |
+| C++ 高性能工程 | [cpp-high-performance-guide](https://github.com/holtwood-systems/cpp-high-performance-guide) | C++20 教学阶梯：内存/SIMD/并发/NUMA/GEMM 与可复跑基准 |
+| KV tiering 上游研究 | [kvtier](https://github.com/holtwood-systems/kvtier) | SGLang HiCache 数据流、W/E/R/P 实验脚手架与结果审计 |
 | 可追溯证据 | [`docs/evidence-index.md`](docs/evidence-index.md) | 结果包、复现入口、已知限制和尚待补齐的证据 |
 | 证据 artifact 生命周期 | [`docs/evidence-artifact-lifecycle.md`](docs/evidence-artifact-lifecycle.md) | Manifest schema、发布/过期状态、hash、claim 与 Agent 审计协议 |
 | 作品集审计与开发路线 | [`docs/portfolio-audit-and-development-roadmap.md`](docs/portfolio-audit-and-development-roadmap.md) | 项目分层、能力缺口、P0/P1/P2 改造与验收标准 |
@@ -46,13 +46,13 @@ CPU 侧教学：cpp-high-performance-guide（独立于 GPU 线，不进入旗舰
 
 | 角色 | 仓库 | 唯一主责 | 状态 |
 |------|------|----------|------|
-| 基础 | [cuda-foundations](https://github.com/open-infra-ai/cuda-foundations) | 从 SGEMM 到可复用推理组件的 CUDA 工程学习路径 | stable |
-| 基础（CPU 侧） | [cpp-high-performance-guide](https://github.com/open-infra-ai/cpp-high-performance-guide) | C++20 高性能工程教学：内存、SIMD、并发、NUMA 与 GEMM 案例 | stable |
-| 对照 | [trifuse](https://github.com/open-infra-ai/trifuse) | Triton 算子与 `torch.library` 集成 | stable |
-| 深挖 | [cuflash](https://github.com/open-infra-ai/cuflash) | CUDA C++ FlashAttention 前后向与 FlashDecoding | stable |
-| 旗舰数据面 | [tiny-llm](https://github.com/open-infra-ai/tiny-llm) | 真实权重加载、量化、decode、KV 与 C ABI | active |
-| 旗舰控制面 | [paged-serving](https://github.com/open-infra-ai/paged-serving) | Paged KV、continuous batching、HTTP/SSE 与 serving 评测 | active |
-| 上游研究 | [kvtier](https://github.com/open-infra-ai/kvtier) | SGLang HiCache/KV tiering 上游研究与可审计复现实验 | active |
+| 基础 | [cuda-foundations](https://github.com/holtwood-systems/cuda-foundations) | 从 SGEMM 到可复用推理组件的 CUDA 工程学习路径 | stable |
+| 基础（CPU 侧） | [cpp-high-performance-guide](https://github.com/holtwood-systems/cpp-high-performance-guide) | C++20 高性能工程教学：内存、SIMD、并发、NUMA 与 GEMM 案例 | stable |
+| 对照 | [trifuse](https://github.com/holtwood-systems/trifuse) | Triton 算子与 `torch.library` 集成 | stable |
+| 深挖 | [cuflash](https://github.com/holtwood-systems/cuflash) | CUDA C++ FlashAttention 前后向与 FlashDecoding | stable |
+| 旗舰数据面 | [tiny-llm](https://github.com/holtwood-systems/tiny-llm) | 真实权重加载、量化、decode、KV 与 C ABI | active |
+| 旗舰控制面 | [paged-serving](https://github.com/holtwood-systems/paged-serving) | Paged KV、continuous batching、HTTP/SSE 与 serving 评测 | active |
+| 上游研究 | [kvtier](https://github.com/holtwood-systems/kvtier) | SGLang HiCache/KV tiering 上游研究与可审计复现实验 | active |
 
 `kvtier` 于 2026-10-25 经所有者裁定提前公开并入册（`active`）：2026-10-26
 已有一份经审计的单卡 L2 回载结果包，但尚无已合入的上游 PR；单卡、单模型结果
@@ -76,8 +76,8 @@ GitHub topics 三处同步。
 
 ## 跨仓契约
 
-- **ABI 契约（代码双源）**：[`tiny-llm/include/tiny_llm/ffi.h`](https://github.com/open-infra-ai/tiny-llm/blob/master/include/tiny_llm/ffi.h)
-  ⇄ [`paged-serving/src/tiny_llm_ffi.rs`](https://github.com/open-infra-ai/paged-serving/blob/master/src/tiny_llm_ffi.rs)
+- **ABI 契约（代码双源）**：[`tiny-llm/include/tiny_llm/ffi.h`](https://github.com/holtwood-systems/tiny-llm/blob/master/include/tiny_llm/ffi.h)
+  ⇄ [`paged-serving/src/tiny_llm_ffi.rs`](https://github.com/holtwood-systems/paged-serving/blob/master/src/tiny_llm_ffi.rs)
   （repr(C) 布局守卫测试即一致性检查）。
 - **语义契约（12 条）**：维度命名 / 布局 / GQA / RoPE / KV 事务语义 / 采样顺序等，
   live 版见 [`docs/cross-repo-contracts.md`](docs/cross-repo-contracts.md)。
@@ -90,12 +90,12 @@ GitHub topics 三处同步。
 - **tiny-llm**：W8A16 推理端到端可用；clean commit `565da79` 的 schema v2
   五组配对 CUDA Graph A/B 中，TPOT 8.322→**5.225 ms/token**（-37.2%），decode
   吞吐 120.168→**191.384 tok/s**（+59.3%）；10 个进程原始 JSONL、模型哈希和
-  [完整限制](https://github.com/open-infra-ai/tiny-llm/blob/master/docs/performance/results/2026-08-23-cuda-graphs-ab.md)
+  [完整限制](https://github.com/holtwood-systems/tiny-llm/blob/master/docs/performance/results/2026-08-23-cuda-graphs-ab.md)
   已归档，TTFT 不作改善声明。2026-10-26 RTX 3060 Laptop 本地门禁以两种真实
   GGUF 模型达到 **252/252 通过、0 skip**，并归档
-  [ncu decode 归因与汇总 CSV](https://github.com/open-infra-ai/tiny-llm/blob/master/docs/performance/results/2026-10-26-ncu-decode-profile.md)；
+  [ncu decode 归因与汇总 CSV](https://github.com/holtwood-systems/tiny-llm/blob/master/docs/performance/results/2026-10-26-ncu-decode-profile.md)；
   前者不是远端持续 GPU CI，后者不代替完整 timeline。direct paged decode /
-  split-KV 已实现并有 [RTX 5070 Ti kernel 原始结果](https://github.com/open-infra-ai/tiny-llm/blob/master/docs/performance/results/2026-09-15-rtx5070ti-splitkv.md)
+  split-KV 已实现并有 [RTX 5070 Ti kernel 原始结果](https://github.com/holtwood-systems/tiny-llm/blob/master/docs/performance/results/2026-09-15-rtx5070ti-splitkv.md)
   与 raw 重算工具；默认仍为 legacy、split 关闭，kernel 数字不外推 TPOT/Serving 收益。
   2026-11-05 修复 CUDA arch 守护失效（compute_52 PTX 被驱动 550 拒 JIT、
   kernel 全静默不跑）后，sm_89 原生门禁 252/252、0 skip，并入库 RTX 4090
@@ -104,10 +104,10 @@ GitHub topics 三处同步。
 - **paged-serving**：**3 并发分页请求 e2e 与 llama.cpp greedy 对齐**（请求 1 全序列
   严格一致；请求 2 的 `equals`/`is` 为 W8A16 vs Q4_K_M 量化 argmax 边界翻转，
   已诚实记录为"前缀一致 + EOS 终止 + 分歧注释"，不伪造全序列一致）。真实 CUDA
-  closed-loop/Poisson 已有 [P1 历史基线](https://github.com/open-infra-ai/paged-serving/tree/master/benchmarks/serving/results/2026-09-04-RTX3060Laptop-paged-serving)
-  与 [P2 当前流式矩阵](https://github.com/open-infra-ai/paged-serving/tree/master/benchmarks/serving/results/2026-09-04-RTX3060Laptop-paged-serving-p2-streaming)：
+  closed-loop/Poisson 已有 [P1 历史基线](https://github.com/holtwood-systems/paged-serving/tree/master/benchmarks/serving/results/2026-09-04-RTX3060Laptop-paged-serving)
+  与 [P2 当前流式矩阵](https://github.com/holtwood-systems/paged-serving/tree/master/benchmarks/serving/results/2026-09-04-RTX3060Laptop-paged-serving-p2-streaming)：
   后者绑定双仓 commit、模型 SHA-256、1344 条原始请求与固定 Poisson seed。批量末端
-  后处理后又有 [当前 21-run 正式矩阵](https://github.com/open-infra-ai/paged-serving/tree/master/benchmarks/serving/results/2026-09-07-RTX3060Laptop-paged-serving-p2-batch-postprocess-streaming)：
+  后处理后又有 [当前 21-run 正式矩阵](https://github.com/holtwood-systems/paged-serving/tree/master/benchmarks/serving/results/2026-09-07-RTX3060Laptop-paged-serving-p2-batch-postprocess-streaming)：
   closed-loop 全部成功，Poisson 0.64 / 1.28 req/s 仍有 429，c2/c8 与三档 Poisson 的
   TTFT p95 未通过 10% 收敛门槛。两包没有配对基线，不能写成速度提升、稳定 SLO、通用容量
   或生产成熟度。CI（2026-10-04）：cargo **615 项测试通过**；2026-10-26 真实
@@ -133,7 +133,7 @@ GitHub topics 三处同步。
 - **kvtier**：SGLang HiCache 上游研究与 W/E/R/P 可审计实验；2026-10-26 在
   WSL2/RTX 3060 Laptop、Qwen2.5-0.5B 上完成 6 轮单卡 L2 回载基线，逐请求
   host 命中与 counter 交叉验证通过，配对 R/P TTFT 比中位数 **0.215**。
-  [结果包](https://github.com/open-infra-ai/kvtier/blob/master/bench/repro-31600/evidence/2026-10-26-wsl2-l2-baseline/README.md)
+  [结果包](https://github.com/holtwood-systems/kvtier/blob/master/bench/repro-31600/evidence/2026-10-26-wsl2-l2-baseline/README.md)
   固定上游 commit、模型与补丁 hash，并保留失败结果和 WSL2 指针根因；该结果
   不代表 #31600 复现、自研 tiering engine、多卡/L3 或跨模型/GPU 性能。
   2026-11-05 原生 Linux/RTX 4090 完成 8 轮基线：host 命中 4223/4224，

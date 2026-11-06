@@ -1,9 +1,9 @@
 # 仓库职责与内容边界
 
-本文定义 `open-infra-ai` 组织、个人求职仓与上游社区之间的内容归属。目标是让面试官
+本文定义 `holtwood-systems` 组织、个人求职仓与上游社区之间的内容归属。目标是让面试官
 打开任意仓库时都能快速判断：它解决什么问题、证据在哪里、哪些内容不属于这里。
 
-## 1. 组织 meta 仓：`open-infra-ai/open-infra-ai`
+## 1. 组织 meta 仓：`holtwood-systems/portfolio`
 
 保留以下公开、稳定、跨项目内容：
 

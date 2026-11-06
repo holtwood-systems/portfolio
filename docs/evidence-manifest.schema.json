@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://raw.githubusercontent.com/open-infra-ai/open-infra-ai/master/docs/evidence-manifest.schema.json",
-  "title": "open-infra-ai evidence manifest",
+  "$id": "https://raw.githubusercontent.com/holtwood-systems/portfolio/master/docs/evidence-manifest.schema.json",
+  "title": "Holtwood Systems evidence manifest",
   "description": "Cross-repository provenance and claim boundary for a correctness, profiling, benchmark, integration, or serving evidence package.",
   "type": "object",
   "additionalProperties": false,

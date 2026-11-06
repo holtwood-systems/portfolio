@@ -189,8 +189,8 @@ metrics()
 
 tiny-llm（数据面）与 paged-serving（控制面）采用**同进程 C ABI 静态链接**：
 
-- 契约双源：[`tiny-llm/include/tiny_llm/ffi.h`](https://github.com/open-infra-ai/tiny-llm/blob/master/include/tiny_llm/ffi.h)
-  ⇄ [`paged-serving/src/tiny_llm_ffi.rs`](https://github.com/open-infra-ai/paged-serving/blob/master/src/tiny_llm_ffi.rs)。
+- 契约双源：[`tiny-llm/include/tiny_llm/ffi.h`](https://github.com/holtwood-systems/tiny-llm/blob/master/include/tiny_llm/ffi.h)
+  ⇄ [`paged-serving/src/tiny_llm_ffi.rs`](https://github.com/holtwood-systems/paged-serving/blob/master/src/tiny_llm_ffi.rs)。
 - `TinyLlmConfig` 为 9 个 int 的 repr(C) 布局；paged-serving 侧有布局守卫测试
   （`size_of == 9*4`）锁定一致性。
 - 分页 KV 策略 1（block_tables + scatter/gather）为默认路径；

@@ -49,7 +49,7 @@ trifuse ────────── 提供 Triton + PyTorch custom op 横向�
 kvtier ─────────── 提供 SGLang HiCache/KV tiering 上游研究，
                     当前不进入 paged-serving 的生产数据路径
 
-open-infra-ai ──── 提供导航、契约、证据索引和状态治理，
+portfolio ─────── 提供导航、契约、证据索引和状态治理，
                     不参与请求执行
 ```
 
@@ -68,7 +68,7 @@ open-infra-ai ──── 提供导航、契约、证据索引和状态治理�
 | `tiny-llm` | Runtime 数据面 | GGUF、量化、Transformer、KV、decode、C ABI | 模型、token ids、KV/block table | logits/token、runtime metrics/error | HTTP、限流、SSE |
 | `paged-serving` | Serving 控制面 | admission、scheduler、BlockPool、请求生命周期、HTTP/SSE | 请求、并发、到达率、生成参数 | token stream、TTFT/TPOT、状态和错误 | kernel 数值实现、权重解析 |
 | `kvtier` | KV 研究层 | SGLang HiCache/tiering 的可审计实验和上游跟踪 | pinned upstream、workload、IO backend | correctness、IO/KV dtype matrix、限制 | 自研生产 tiering engine |
-| `open-infra-ai` | 作品集治理层 | 项目边界、跨仓契约、evidence manifest、公开索引 | 各仓 verified artifacts | 可审计证据链、面试入口 | 技术实现和 benchmark 生成 |
+| `portfolio` | 作品集治理层 | 项目边界、跨仓契约、evidence manifest、公开索引 | 各仓 verified artifacts | 可审计证据链、面试入口 | 技术实现和 benchmark 生成 |
 
 ---
 
@@ -170,7 +170,7 @@ kvtier
 | `trifuse` + `tiny-llm` | 否 | Python/PyTorch 与 C++ runtime 是不同执行环境 |
 | `cuda-foundations` + 任意仓 | 否 | 教学和 profiler 基线 |
 | `kvtier` + 旗舰系统 | 否 | pinned SGLang 研究 lane |
-| `open-infra-ai` + 任意仓 | 否 | 只消费结果和 manifest |
+| `portfolio` + 任意仓 | 否 | 只消费结果和 manifest |
 
 ### 4.3 证据依赖
 
@@ -205,7 +205,7 @@ build
 4. `tiny-llm`：构建 runtime/tests，确认模型无关 synthetic tests；
 5. `paged-serving`：构建 Rust service，先用 mock/reference backend 验证协议；
 6. `kvtier`：固定上游 SGLang commit，先跑 CPU-only/schema/audit；
-7. `open-infra-ai`：只检查链接、schema 和 evidence index。
+7. `portfolio`：只检查链接、schema 和 evidence index。
 
 Phase A 的交付物：
 
@@ -449,7 +449,7 @@ Hardware: kernels / memory / streams / GPU
 | 遇到性能回退怎么定位？ | 全部 | comparison key、A/B、timeline、kernel metrics、rollback |
 | KV tiering 是否已生产化？ | `kvtier` | pinned upstream、实验范围和 prohibited claim |
 | 多 GPU 做过吗？ | 理论材料 | 明确“未在当前项目实测”，解释 NCCL/TP 设计和验证计划 |
-| 项目如何避免 cherry-pick 数据？ | `open-infra-ai` | raw artifacts、manifest、failed samples、stale/revoked |
+| 项目如何避免 cherry-pick 数据？ | `portfolio` | raw artifacts、manifest、failed samples、stale/revoked |
 
 ---
 
@@ -491,7 +491,7 @@ GitHub/简历展示顺序：
 3. `trifuse`：Triton/PyTorch 集成补充；
 4. `cuda-foundations`：基础与 profiler 教学；
 5. `kvtier`：前沿 KV 研究；
-6. `open-infra-ai`：证据和导航入口。
+6. `portfolio`：证据和导航入口。
 
 最终不是证明“写过七个仓库”，而是证明：
 

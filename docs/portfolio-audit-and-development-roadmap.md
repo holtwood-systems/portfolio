@@ -45,8 +45,8 @@
 
 组合：
 
-- [`tiny-llm`](https://github.com/open-infra-ai/tiny-llm)：数据面；
-- [`paged-serving`](https://github.com/open-infra-ai/paged-serving)：控制面。
+- [`tiny-llm`](https://github.com/holtwood-systems/tiny-llm)：数据面；
+- [`paged-serving`](https://github.com/holtwood-systems/paged-serving)：控制面。
 
 这条主线证明：
 
@@ -60,9 +60,9 @@
 - 当前为单 GPU；两种真实 GGUF 模型只构成本地正确性证据，不代表完整架构兼容矩阵；
 - direct paged decode 与 split-KV 已实现并有 kernel 级原始结果；默认仍为 legacy
   gather 路径、split-KV 关闭，prefill 保留 gather；
-- 默认分支已通过 [PR #24](https://github.com/open-infra-ai/paged-serving/pull/24)
+- 默认分支已通过 [PR #24](https://github.com/holtwood-systems/paged-serving/pull/24)
   合入可靠终态、取消与 Serving 证据门禁（merge `e60a315`，2026-10-05 北京时间）；
-  旧 [PR #23](https://github.com/open-infra-ai/paged-serving/pull/23) 于 2026-10-25
+  旧 [PR #23](https://github.com/holtwood-systems/paged-serving/pull/23) 于 2026-10-25
   以 superseded 关闭，其取消所有权设计已由 master 实现吸收。整改批次包含有界
   mailbox/带外终态、多候选合并和类型化指标，HTTP 错误按请求去重、不乘候选数；
   未验证真实 CUDA 取消/网络压力，不称生产保障；
@@ -73,9 +73,9 @@
 
 组合：
 
-- [`cuflash`](https://github.com/open-infra-ai/cuflash)：CUDA C++ 深挖；
-- [`trifuse`](https://github.com/open-infra-ai/trifuse)：Triton 与 PyTorch 集成对照；
-- [`cuda-foundations`](https://github.com/open-infra-ai/cuda-foundations)：基础学习档案。
+- [`cuflash`](https://github.com/holtwood-systems/cuflash)：CUDA C++ 深挖；
+- [`trifuse`](https://github.com/holtwood-systems/trifuse)：Triton 与 PyTorch 集成对照；
+- [`cuda-foundations`](https://github.com/holtwood-systems/cuda-foundations)：基础学习档案。
 
 这条主线证明：
 
@@ -93,7 +93,7 @@
 
 ### 辅助证据
 
-- `kvtier`（[公开孵化](https://github.com/open-infra-ai/kvtier)，2026-10-25 入册 active）：KV offload 源码研究、实验编排和
+- `kvtier`（[公开孵化](https://github.com/holtwood-systems/kvtier)，2026-10-25 入册 active）：KV offload 源码研究、实验编排和
   telemetry 门禁；2026-10-26 已有一份经审计的单卡 L2 回载基线与 WSL2 host
   指针根因证据；2026-11-05 原生 Linux/RTX 4090 完成 8 轮基线，kernel IO
   后端无需补丁（反向证实 WSL2 问题为平台特有），torch 2.11+cu128 与源码
