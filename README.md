@@ -6,7 +6,19 @@
 
 ## 技术叙事
 
-我的成长线是 **GPU kernel → LLM 推理优化 → 分布式系统**：先用 Triton/CUDA 手写
+**能力的来处。** 做 AI Infra 之前，我在基因组测序数据处理上做系统性能工程：参与一条
+FASTQ → BAM 的比对流水线，把质控过滤、BWA / BWA-MEM2 / minimap2 比对、坐标排序和
+重复标记编排成端到端流程。那条链路的瓶颈不在单个算法，而在各阶段资源模型不一致——
+过滤是流式 CPU 任务，比对器自带多线程和大索引，排序去重需要全局顺序。工作重心因此是
+用有界队列串联阶段、用三阶段外部排序把内存换成磁盘 I/O、把线程预算和临时文件峰值压进
+可解释范围，并且坚持先建立正确性闸门再谈优化。
+
+**同一套方法，第二次迁移。** 这和现在做的事是同一个循环：定位瓶颈 → 改数据布局与
+并行结构 → 用测量证明收益。区别只在被优化的对象，从 CPU 上的基因组序列换成了 GPU 上的
+Transformer 推理。`cpp-high-performance-guide` 是这段 CPU 侧方法论的公开可验证版本；
+`cuflash` 与 `tiny-llm` 是同一套思路换了执行模型。
+
+**这条线本身。** GPU kernel → LLM 推理优化 → 分布式系统：先用 Triton/CUDA 手写
 FlashAttention、softmax 和 Transformer 组件，全部与参考实现对到 1e-6 量级；再用
 C++/CUDA 把 GGUF 权重一路写到 token 生成的推理引擎，配上 Rust serving 控制面。
 另外在私有 interview lab 中做过 2×RTX 4090 的 DDP/KV/投机解码练习；这些结果尚未
