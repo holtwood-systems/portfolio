@@ -33,9 +33,10 @@ Agent Note。
   `cargo test --locked` 口径（commit `b6af619`；doc 17、lib 177）。
   `README.md` 项目卡片与证据摘要同步；旧 changelog 保留 615 作为历史记录，
   不回写。
-- **今日本地提交**（未推送，portfolio 数字暂以本地 commit 为准）：
-  `paged-serving@b6af619`、`trifuse@10cd88c`、`cuda-foundations@d8dc35a`、
-  `cuflash@fcbcff2`、`tiny-llm@12a03f8`。
+- **今日提交**（均已推送，portfolio 数字以对应 commit 为准）：
+  `paged-serving@b6af619`、`trifuse@10cd88c`、`cuda-foundations@d8dc35a`
+  （note 补充 `fb697aa`）、`cuflash@fcbcff2`、`tiny-llm@12a03f8`
+  （CI 断言修正 `e0ad221`）。
 - **验证边界**：paged-serving 与 trifuse 已跑通本地 CPU 测试；cuda-foundations
   的 MemoryPool 用真实头文件 host harness 验证；cuflash 与 tiny-llm 已在
   CUDA 12.2.2 devel 容器中完整编译（tiny-llm 261 项用例，GGUF/量化 18 项
