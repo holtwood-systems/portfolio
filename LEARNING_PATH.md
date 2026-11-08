@@ -17,7 +17,8 @@
 主线之外另有两个仓：`cpp-high-performance-guide` 是 CPU 侧 C++ 性能工程的
 并行基础线（内存/SIMD/并发/NUMA/GEMM，stable），可与阶段 1–2 并行使用；
 `kvtier` 是 KV tiering 上游研究选修（SGLang HiCache 复现实验与上游贡献，
-active，尚无完成审计的 GPU 结果包）。两者不改变上表主线顺序。
+active；已有 2026-10-26 WSL2/3060 与 2026-11-05 原生 Linux/4090 两个完成审计的
+GPU 结果包）。两者不改变上表主线顺序。
 
 > ⚠️ **教学预览**：`cuda-foundations` 的 [04-inference-engine](https://github.com/holtwood-systems/cuda-foundations/blob/master/04-inference-engine/README.md)
 > 是 `tiny-llm` 的简化预习版（教学预览，**非独立作品**），用于演示 kernel/内存/流如何

@@ -18,9 +18,9 @@ C++/CUDA 把 GGUF 权重一路写到 token 生成的推理引擎，配上 Rust s
 | 项目 | 一句话定位 | 核心数字 |
 |------|------------|----------|
 | [tiny-llm](../tiny-llm) | CUDA 原生 C++ 推理引擎：GGUF → W8A16 → decode，显式/分页 KV | CUDA Graphs TPOT **-37.2%**、RTX 4090 基线 2.267 ms/token（441 tok/s）、门禁 252/252、compute-sanitizer 全绿 |
-| [paged-serving](../paged-serving) | Rust serving 控制面：Paged KV + continuous batching + HTTP/SSE | 3 并发 e2e 与 llama.cpp greedy 对齐、cargo 615 项测试、4090 closed-loop c1–c8 收敛 ~300 tok/s |
-| [cuflash](../cuflash) | CUDA C++ FlashAttention 前后向（WMMA、FlashDecoding） | FP32/FP16/BF16、causal 边界块跳过、81/81 测试 |
-| [trifuse](../trifuse) | Triton 融合算子 + `torch.library` 集成 | RTX 4090 实测：rmsnorm_rope 359.9 GB/s、gated_mlp 31.8 TFLOPS、GPU 123/123 |
+| [paged-serving](../paged-serving) | Rust serving 控制面：Paged KV + continuous batching + HTTP/SSE | 3 并发 e2e 与 llama.cpp greedy 对齐、cargo 301 passed / 1 ignored（11-08）、4090 closed-loop c1–c8 收敛 ~300 tok/s |
+| [cuflash](../cuflash) | CUDA C++ FlashAttention 前后向（WMMA、FlashDecoding） | FP32/FP16/BF16、causal 边界块跳过、串行 ctest 71/71（1 skip） |
+| [trifuse](../trifuse) | Triton 融合算子 + `torch.library` 集成 | RTX 4090 实测：rmsnorm_rope 359.9 GB/s、gated_mlp 31.8 TFLOPS、pytest 130/131（bf16 SGEMM 容差失败留档） |
 | [cuda-foundations](../cuda-foundations) | CUDA 工程学习阶梯：SGEMM → 推理组件 | 261/261 测试 |
 | [cpp-high-performance-guide](../cpp-high-performance-guide) | C++20 性能工程教学：内存/SIMD/并发/NUMA/GEMM | CI 119/119 |
 | [kvtier](../kvtier) | SGLang HiCache KV tiering 上游研究 | 单卡 L2 回载：配对 R/P TTFT 比中位 0.215（3060）/ 0.375（4090） |
@@ -144,7 +144,8 @@ GitHub topics 三处同步。
   后处理后又有 [当前 21-run 正式矩阵](https://github.com/holtwood-systems/paged-serving/tree/master/benchmarks/serving/results/2026-09-07-RTX3060Laptop-paged-serving-p2-batch-postprocess-streaming)：
   closed-loop 全部成功，Poisson 0.64 / 1.28 req/s 仍有 429，c2/c8 与三档 Poisson 的
   TTFT p95 未通过 10% 收敛门槛。两包没有配对基线，不能写成速度提升、稳定 SLO、通用容量
-  或生产成熟度。CI（2026-10-04）：cargo **615 项测试通过**；2026-10-26 真实
+  或生产成熟度。本地（2026-11-08，commit `b6af619`）：`cargo test --locked` **301 passed /
+  1 ignored**；此前 615 为 CI 多 job 汇总口径，无法从单次命令复现，不再引用。2026-10-26 真实
   tiny-llm 后端本地测试 **8/8 通过、0 ignored**，不替代持续 GPU CI 或网络故障验证。
   2026-11-05 真实后端 RTX 4090 closed-loop 双包入库：首包如实记录外部
   显存干扰下 c1/c4/c8 未收敛，独占复测 c1–c8 全收敛、~300 tok/s 饱和。
@@ -167,7 +168,7 @@ GitHub topics 三处同步。
 - **kvtier**：SGLang HiCache 上游研究与 W/E/R/P 可审计实验；2026-10-26 在
   WSL2/RTX 3060 Laptop、Qwen2.5-0.5B 上完成 6 轮单卡 L2 回载基线，逐请求
   host 命中与 counter 交叉验证通过，配对 R/P TTFT 比中位数 **0.215**。
-  [结果包](https://github.com/holtwood-systems/kvtier/blob/master/bench/repro-31600/evidence/2026-10-26-wsl2-l2-baseline/README.md)
+  [结果包](https://github.com/holtwood-systems/kvtier/blob/main/bench/repro-31600/evidence/2026-10-26-wsl2-l2-baseline/README.md)
   固定上游 commit、模型与补丁 hash，并保留失败结果和 WSL2 指针根因；该结果
   不代表 #31600 复现、自研 tiering engine、多卡/L3 或跨模型/GPU 性能。
   2026-11-05 原生 Linux/RTX 4090 完成 8 轮基线：host 命中 4223/4224，
