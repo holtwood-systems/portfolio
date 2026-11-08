@@ -34,6 +34,10 @@ Agent Note。
   `README.md` 项目卡片与证据摘要同步；旧 changelog 保留 615 作为历史记录，
   不回写。
 - **今日本地提交**（未推送，portfolio 数字暂以本地 commit 为准）：
-  `paged-serving@b6af619`、`trifuse@10cd88c`、`cuda-foundations@d8dc35a`。
-  cuflash 的 workspace/stream 修复与 tiny-llm 的 FFI/GGUF/Q4_0 批次仍待
-  GPU 环境验证后提交。
+  `paged-serving@b6af619`、`trifuse@10cd88c`、`cuda-foundations@d8dc35a`、
+  `cuflash@fcbcff2`、`tiny-llm@12a03f8`。
+- **验证边界**：paged-serving 与 trifuse 已跑通本地 CPU 测试；cuda-foundations
+  的 MemoryPool 用真实头文件 host harness 验证；cuflash 与 tiny-llm 已在
+  CUDA 12.2.2 devel 容器中完整编译（tiny-llm 261 项用例，GGUF/量化 18 项
+  host 测试通过）。真实 GPU 全量门禁、cuflash 并发数值对拍、tiny-llm 真实
+  Q4_0 模型 e2e 仍未运行，相关声明保持 E2/E3 边界。
