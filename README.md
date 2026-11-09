@@ -4,6 +4,10 @@
 > 每个性能结论都应绑定代码、环境、原始结果和适用边界。本仓是组织的
 > landing 页、状态注册表、学习路径、跨仓契约和历史档案。
 
+本仓是**组织视图**：只覆盖 `holtwood-systems` 及其证据链。跨账号的仓库归属、
+晋升与归档判据以 [holtwood/repos-db](https://github.com/holtwood/repos-db) 的
+`ARCHITECTURE.md` 为准；两者冲突时以 repos-db 为准。
+
 ## 技术叙事
 
 我的成长线是 **GPU kernel → LLM 推理优化 → 分布式系统**：先用 Triton/CUDA 手写
@@ -34,6 +38,10 @@ C++/CUDA 把 GGUF 权重一路写到 token 生成的推理引擎，配上 Rust s
 interview lab 中进行，原始记录保留在私有执行仓；尚未形成公开、可复现的
 artifact 链接。按本仓证据规则，本页不列这些数字，也不把它们写成分布式
 经验；待有稳定硬件、公开结果包和限制说明后再入册。
+
+同一条边界适用于 2026-11 迁入本组织的 Ascend 910B2 实验线（`ascend-llm-infra-lab`，
+私有）：KV 账本、goodput/SLO、调度消融等 50+ 实验记录留在私有仓，本页不引用其数字；
+公开可复现的 Ascend 材料另行整理后再入册。
 
 仓库职责与私人求职材料的边界见
 [`docs/repository-boundaries.md`](docs/repository-boundaries.md)。
