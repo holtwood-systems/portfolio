@@ -25,14 +25,18 @@ Status: proposed
 
 ## Proposal
 
-保留 `portfolio` 为唯一治理仓（命名与职责最贴合）。分两步收敛：
+保留 `portfolio` 为唯一治理仓（命名与职责最贴合）。远端状态已于
+2026-11-10 经 `gh api` 核验：`holtwood-systems/open-infra-ai` 为
+`archived: true` + `private`（只读私有快照，不对外可见，也不可推送），
+故合并事实上只剩本地处理，无需做公开重定向：
 
-1. 本轮：open-infra-ai 全量同步为 portfolio 当前状态，并按
-   2026-11-06 已落地决策移除其 `interview/`（私有存档已核验存在于
-   career-prep `archive/legacy-2026-11-09/`）；先消除漂移与半迁移。
-2. 下轮：open-infra-ai 内容收敛为一页重定向 README 指向 portfolio，
-   GitHub 上 archive 该仓；组织 profile 与各仓 README 的组织入口
-   链接同步更新。状态注册表、证据索引、跨仓契约此后只维护一份。
+1. 本轮（已随本提案同步落地）：open-infra-ai 本地工作区全量同步为
+   portfolio 当前状态，并按 2026-11-06 已落地决策移除其 `interview/`
+   （私有存档已核验存在于 career-prep `archive/legacy-2026-11-09/`），
+   使冻结快照内容与权威仓一致、不留半迁移状态。
+2. 下轮（待所有者确认）：本地 open-infra-ai 克隆保留为冻结快照或
+   直接删除，停止作为镜像维护；此后治理文档、状态注册表、证据索引、
+   跨仓契约只在 portfolio 维护一份。
 
 ## Alternatives considered
 
@@ -52,9 +56,9 @@ Status: proposed
 
 ## Risks
 
-- open-infra-ai 可能被外部链接（简历、issue、历史文档）引用：重定向
-  期保留一页 landing README 写明去向，不立即删仓。
-- archive 后 GitHub topics 与组织 README 可能残留旧链接：归档前统一
-  改向 portfolio，避免死链。
+- 本地 open-infra-ai 克隆若继续被当作活跃镜像编辑，会重新产生与
+  portfolio 的漂移：删除本地克隆是最干净的收口，保留则须约定只读。
+- 各技术仓 README 的组织入口均已指向 portfolio（2026-11-10 核验），
+  无指向 open-infra-ai 的活链接；旧文档中的历史提及按归档惯例不改写。
 - 失去「第二份拷贝」的表面冗余：实际冗余由 git 历史与本地克隆提供，
   不构成真实风险。
