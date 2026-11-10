@@ -10,10 +10,9 @@
 3. 每个阶段完成后，面试时可以证明什么，不能夸大成什么？
 
 逐仓任务 ID、允许文件、验收命令和 Agent 停止条件由个人私有执行仓
-`holtwood/ai-infra-interview-prep` 的 `P0_P1_AGENT_BACKLOG.md` 维护；L3/L4 设计
-门禁由同仓 `L3_L4_DESIGN_REVIEW_PACKAGES.md` 维护（该仓 2026-10-25 自组织迁出
-并转为私有，外部不可见）。本文只定义稳定的跨仓架构和证据关系，不复制任务实现
-细节。本文的「七仓」指本系统集成范围内的六个技术仓加治理仓；`cpp-high-performance-guide`
+`holtwood-systems/career-prep` 的 `plans/`（`current.md` 与 `development/`
+任务规格）维护；历史设计门禁稿保留在同仓 `archive/`（该仓 private，外部不可见）。
+本文只定义稳定的跨仓架构和证据关系，不复制任务实现细节。本文的「七仓」指本系统集成范围内的六个技术仓加治理仓；`cpp-high-performance-guide`
 （2026-10-25 入册的 CPU 侧教学仓）与 `ai-infra-radar`（生态工作台）独立于本系统图，
 不改变集成与证据关系。
 

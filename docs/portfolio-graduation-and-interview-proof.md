@@ -4,7 +4,7 @@
 > AI Infra 面试官沿代码、正确性、性能和系统边界继续追问。
 
 本文是 live 标准；面试排练材料已于 2026-11-06 迁回个人私有仓
-（`holtwood/ai-infra-interview-prep` 的 `archive/portfolio-interview-2026-08/`），
+（`holtwood-systems/career-prep` 的 `archive/` 下 `portfolio-interview-2026-08/`），
 数字和能力状态仍应以技术仓当前 commit、结果包和
 [`evidence-index.md`](evidence-index.md) 为准。
 
