@@ -3,6 +3,9 @@
 > 审计日期：2026-09-13；当前事实复核：2026-10-26；历史实验仍以其原始日期和
 > commit 引用。
 >
+> 2026-11-10 状态说明：本文 P0–P2 是能力差距地图与验收标准库，不是排期
+> 承诺；同一时间只推进一条深改造，活跃任务以各仓当前计划与实际授权为准。
+>
 > 范围：`cuda-foundations`、`cpp-high-performance-guide`、`cuflash`、`trifuse`、
 > `tiny-llm`、`paged-serving`、`kvtier` 与本组织总仓。
 >
