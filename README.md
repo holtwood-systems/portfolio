@@ -5,8 +5,8 @@
 > landing 页、状态注册表、学习路径、跨仓契约和历史档案。
 
 本仓是**组织视图**：只覆盖 `holtwood-systems` 及其证据链。跨账号的仓库归属、
-晋升与归档判据以 [holtwood/repos-db](https://github.com/holtwood/repos-db) 的
-`ARCHITECTURE.md` 为准；两者冲突时以 repos-db 为准。
+晋升与归档判据以 [holtwood/repo-registry](https://github.com/holtwood/repo-registry) 的
+`ARCHITECTURE.md` 为准；两者冲突时以 repo-registry 为准。
 
 ## 技术叙事
 
