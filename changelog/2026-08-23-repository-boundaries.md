@@ -2,7 +2,7 @@
 
 - 新增 `docs/repository-boundaries.md`，明确 meta 仓、五个技术仓、个人求职执行仓和
   上游社区贡献的职责边界。
-- 将活跃 `job-hunting/` 内容迁往个人仓 `holtwood/ai-infra-interview-prep`；meta 仓
+- 将活跃 `job-hunting/` 内容迁往个人私有仓（旧面试材料仓）；meta 仓
   不再维护简历、公司清单、投递状态与评论草稿。
 - 保留 `interview/`、历史计划和 `docs/organization-audit/` 原文，未改写历史事实。
 - 更新 README 的 2026-08-23 本地验证快照和面试展示优先级：`tiny-llm` 为推理加速

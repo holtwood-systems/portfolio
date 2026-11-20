@@ -6,7 +6,7 @@ Status: implemented
 
 治理文档停在「5 公开技术仓 + kvtier」的世界，组织现实是 10 个仓：
 `cpp-high-performance-guide` 与 `ai-infra-radar` 在全部治理文档中零覆盖，而毕业
-标准明确写了「不要新增第八个仓库」；`ai-infra-interview-prep` 以「个人执行仓」
+标准明确写了「不要新增第八个仓库」；旧面试材料仓以「个人执行仓」
 名义公开挂在组织下，违反仓库边界文档对组织「只承载可复现的公开技术作品」的
 定义，且根 README 与 meta README 对其归属口径互相矛盾；两套 changelog 分别自
 2026-09-27 / 2026-08-23 停更，radar 建仓、cpp-guide 入驻、interview-prep 迁移
@@ -19,7 +19,7 @@ Status: implemented
    holtwood 个人生活项目分离；公开成员身份下贡献图不受影响。
 2. `cpp-high-performance-guide` 以 **stable** 入册状态注册表与边界文档（CPU 侧
    教学线，不进入旗舰系统集成图），仓名加入冻结清单。
-3. `ai-infra-interview-prep` 迁回个人账号 `holtwood` 并转为私有，组织不再承载
+3. 旧面试材料仓迁回个人账号 `holtwood` 并转为私有，组织不再承载
    求职执行材料；边界文档第 3 节改指个人私有仓。
 4. `ai-infra-radar` 登记为组织私有工作台（不进公开注册表），每日扫描 cron 暂停
    （2026-10-05 后无人工 triage，自动化产出无人消费），恢复 triage 时再启用。
@@ -42,7 +42,7 @@ Status: implemented
 - **收益**：注册表、边界文档、org profile、根 README 与组织现实一致；公开面不再
   暴露求职过程材料；cpp-guide 的徽章、克隆地址、文档站与 Pages 部署守卫统一归属
   open-infra-ai，文档站恢复自动部署。
-- **代价**：`holtwood/ai-infra-interview-prep` 私有后外部链接 404（GitHub 转移
+- **代价**：旧面试材料仓转私有后外部链接 404（GitHub 转移
   重定向仍在），系统地图的 backlog 引用改为文字指称；radar 每日数据在 triage
   恢复前不再累积；「七仓」的组成口径需要在系统地图中以文字澄清。
 
